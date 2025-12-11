@@ -7,7 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface HeaderProps {
   selectedNode: string;
@@ -20,7 +19,7 @@ export function Header({ selectedNode, onNodeChange, onRefresh, isRefreshing }: 
   return (
     <header className="glass-panel rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between sticky top-4 z-50 animate-fade-in">
       <div className="flex items-center gap-4 mb-4 md:mb-0">
-        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary to-warning flex items-center justify-center shadow-lg glow-primary">
+        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary to-info flex items-center justify-center shadow-lg glow-primary">
           <Server className="w-6 h-6 text-primary-foreground" />
         </div>
         <div>
@@ -42,8 +41,6 @@ export function Header({ selectedNode, onNodeChange, onRefresh, isRefreshing }: 
             <SelectItem value="secondary">Secondary</SelectItem>
           </SelectContent>
         </Select>
-
-        <ThemeToggle />
 
         <Button
           variant="default"
