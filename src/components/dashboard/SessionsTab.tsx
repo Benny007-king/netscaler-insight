@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,13 +9,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { StatusBadge } from "./StatusBadge";
 import { fetchUserSessions, UserSession } from "@/lib/api";
-import { Download, Search, Users, Clock, Wifi, Info } from "lucide-react";
+import { Download, Search, Users, Clock, Wifi, Info, RefreshCw } from "lucide-react";
 
 interface SessionsTabProps {
   selectedNode: string;
 }
+
+const REFRESH_INTERVAL = 10000; // 10 seconds
 
 export function SessionsTab({ selectedNode }: SessionsTabProps) {
   const [fromDate, setFromDate] = useState("");
@@ -27,6 +30,9 @@ export function SessionsTab({ selectedNode }: SessionsTabProps) {
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
+  const [autoRefresh, setAutoRefresh] = useState(false);
+  const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleSearch = useCallback(async () => {
     setLoading(true);
@@ -61,6 +67,22 @@ export function SessionsTab({ selectedNode }: SessionsTabProps) {
       setInitialLoad(false);
     }
   }, [initialLoad, handleSearch]);
+
+  // Auto-refresh interval
+  useEffect(() => {
+    if (autoRefresh && searched) {
+      intervalRef.current = setInterval(() => {
+        handleSearch();
+      }, REFRESH_INTERVAL);
+    }
+    
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [autoRefresh, searched, handleSearch]);
 
   const handleExport = () => {
     const params = new URLSearchParams({
@@ -151,7 +173,18 @@ export function SessionsTab({ selectedNode }: SessionsTabProps) {
             </Select>
           </div>
 
-          <div className="flex items-end gap-2 ml-auto">
+          <div className="flex items-end gap-3 ml-auto">
+            <div className="flex items-center gap-2 px-3 py-2 bg-secondary/50 rounded-lg border border-border/50">
+              <Switch
+                id="auto-refresh"
+                checked={autoRefresh}
+                onCheckedChange={setAutoRefresh}
+              />
+              <Label htmlFor="auto-refresh" className="text-xs text-muted-foreground cursor-pointer flex items-center gap-1.5">
+                <RefreshCw className={`w-3.5 h-3.5 ${autoRefresh ? 'animate-spin' : ''}`} />
+                Auto-refresh
+              </Label>
+            </div>
             <Button onClick={handleSearch} disabled={loading} className="gap-2">
               <Search className="w-4 h-4" />
               Search

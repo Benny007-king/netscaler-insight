@@ -92,9 +92,6 @@ const Index = () => {
               </>
             )}
           </div>
-          <Badge variant="warning" className="text-xs">
-            Demo Mode
-          </Badge>
         </div>
 
         {/* Tabs */}
