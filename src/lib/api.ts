@@ -10,7 +10,7 @@ interface ApiResponse<T = unknown> {
 }
 
 // Demo data for when backend is not available
-const DEMO_MODE = false; // Set to true for demo data when backend is unavailable
+const DEMO_MODE = true; // Set to false when connecting to real Flask backend
 
 const demoSystemStats = {
   primary: {
