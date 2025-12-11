@@ -19,7 +19,7 @@ interface FailoverTabProps {
 export function FailoverTab({ selectedNode }: FailoverTabProps) {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  const [eventType, setEventType] = useState("");
+  const [eventType, setEventType] = useState("all");
   const [events, setEvents] = useState<FailoverEvent[]>([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
@@ -32,7 +32,7 @@ export function FailoverTab({ selectedNode }: FailoverTabProps) {
         node: selectedNode,
         from: fromDate,
         to: toDate,
-        type: eventType,
+        type: eventType === "all" ? "" : eventType,
       });
 
       if (result.ok) {
@@ -53,7 +53,7 @@ export function FailoverTab({ selectedNode }: FailoverTabProps) {
       node: selectedNode,
       ...(fromDate && { from: fromDate }),
       ...(toDate && { to: toDate }),
-      ...(eventType && { type: eventType }),
+      ...(eventType && eventType !== "all" && { type: eventType }),
     });
     window.open(`/api/export/failover-history?${params.toString()}`);
   };
@@ -109,7 +109,7 @@ export function FailoverTab({ selectedNode }: FailoverTabProps) {
                 <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All</SelectItem>
+                <SelectItem value="all">All</SelectItem>
                 <SelectItem value="automatic">Automatic</SelectItem>
                 <SelectItem value="manual">Manual</SelectItem>
                 <SelectItem value="failure">Failure</SelectItem>

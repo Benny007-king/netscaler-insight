@@ -21,8 +21,8 @@ export function SessionsTab({ selectedNode }: SessionsTabProps) {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [username, setUsername] = useState("");
-  const [sessionType, setSessionType] = useState("");
-  const [sessionStatus, setSessionStatus] = useState("");
+  const [sessionType, setSessionType] = useState("all");
+  const [sessionStatus, setSessionStatus] = useState("all");
   const [sessions, setSessions] = useState<UserSession[]>([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
@@ -36,8 +36,8 @@ export function SessionsTab({ selectedNode }: SessionsTabProps) {
         from: fromDate,
         to: toDate,
         user: username,
-        type: sessionType,
-        status: sessionStatus,
+        type: sessionType === "all" ? "" : sessionType,
+        status: sessionStatus === "all" ? "" : sessionStatus,
       });
 
       if (result.ok) {
@@ -59,8 +59,8 @@ export function SessionsTab({ selectedNode }: SessionsTabProps) {
       ...(fromDate && { from: fromDate }),
       ...(toDate && { to: toDate }),
       ...(username && { user: username }),
-      ...(sessionType && { type: sessionType }),
-      ...(sessionStatus && { status: sessionStatus }),
+      ...(sessionType && sessionType !== "all" && { type: sessionType }),
+      ...(sessionStatus && sessionStatus !== "all" && { status: sessionStatus }),
     });
     window.open(`/api/export/user-sessions?${params.toString()}`);
   };
@@ -120,7 +120,7 @@ export function SessionsTab({ selectedNode }: SessionsTabProps) {
                 <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All</SelectItem>
+                <SelectItem value="all">All</SelectItem>
                 <SelectItem value="vpn">VPN</SelectItem>
                 <SelectItem value="web">Web</SelectItem>
                 <SelectItem value="aaa">AAA</SelectItem>
@@ -135,7 +135,7 @@ export function SessionsTab({ selectedNode }: SessionsTabProps) {
                 <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All</SelectItem>
+                <SelectItem value="all">All</SelectItem>
                 <SelectItem value="active">Active</SelectItem>
                 <SelectItem value="terminated">Terminated</SelectItem>
               </SelectContent>
