@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,6 +26,7 @@ export function SessionsTab({ selectedNode }: SessionsTabProps) {
   const [sessions, setSessions] = useState<UserSession[]>([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(true);
 
   const handleSearch = useCallback(async () => {
     setLoading(true);
@@ -52,6 +53,14 @@ export function SessionsTab({ selectedNode }: SessionsTabProps) {
       setLoading(false);
     }
   }, [selectedNode, fromDate, toDate, username, sessionType, sessionStatus]);
+
+  // Auto-load on mount
+  useEffect(() => {
+    if (initialLoad) {
+      handleSearch();
+      setInitialLoad(false);
+    }
+  }, [initialLoad, handleSearch]);
 
   const handleExport = () => {
     const params = new URLSearchParams({
