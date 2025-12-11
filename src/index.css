@@ -12,6 +12,70 @@
 
 @layer base {
   :root {
+    /* Light Theme - Clean professional look */
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* NetScaler Orange - Primary brand color */
+    --primary: 24 95% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 20% 93%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 20% 93%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 24 95% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Status colors */
+    --success: 160 84% 39%;
+    --success-foreground: 0 0% 100%;
+    
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 0%;
+
+    --info: 217 91% 60%;
+    --info-foreground: 0 0% 100%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 24 95% 50%;
+
+    --radius: 0.75rem;
+
+    /* Glass effects */
+    --glass-background: 0 0% 100%;
+    --glass-border: 214 32% 91%;
+
+    /* Chart colors */
+    --chart-1: 24 95% 50%;
+    --chart-2: 217 91% 60%;
+    --chart-3: 160 84% 39%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 38 92% 50%;
+
+    --sidebar-background: 210 20% 98%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 24 95% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 20% 93%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 24 95% 50%;
+  }
+
+  .dark {
     /* NetScaler Dark Theme - Inspired by Citrix branding */
     --background: 222 47% 5%;
     --foreground: 210 40% 96%;
@@ -51,8 +115,6 @@
     --border: 217 33% 20%;
     --input: 217 33% 20%;
     --ring: 24 95% 53%;
-
-    --radius: 0.75rem;
 
     /* Glass effects */
     --glass-background: 222 47% 11%;
@@ -103,14 +165,19 @@
     @apply border-border;
   }
 
-  html {
-    @apply dark;
-  }
-
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    background: radial-gradient(ellipse at top center, hsl(222 47% 12%) 0%, hsl(222 47% 5%) 60%);
     min-height: 100vh;
+  }
+
+  .dark body,
+  body.dark {
+    background: radial-gradient(ellipse at top center, hsl(222 47% 12%) 0%, hsl(222 47% 5%) 60%);
+  }
+
+  :root body,
+  body:not(.dark) {
+    background: linear-gradient(180deg, hsl(210 20% 98%) 0%, hsl(210 25% 95%) 100%);
   }
 }
 

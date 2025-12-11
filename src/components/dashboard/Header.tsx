@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface HeaderProps {
   selectedNode: string;
@@ -41,6 +42,8 @@ export function Header({ selectedNode, onNodeChange, onRefresh, isRefreshing }: 
             <SelectItem value="secondary">Secondary</SelectItem>
           </SelectContent>
         </Select>
+
+        <ThemeToggle />
 
         <Button
           variant="default"
